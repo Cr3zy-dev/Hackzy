@@ -12,7 +12,7 @@ Simple multi-tool for ethical hacking and learning about computers.
 > Unauthorized use of this tool may be illegal and can result in criminal charges.  
 > Always use Hackzy in accordance with local laws and regulations.
 >
-> Hackzy © 2025 Cr3zy ([GitHub Profile](https://github.com/jmeno))  
+> Hackzy © 2025 Cr3zy ([GitHub Profile](https://github.com/Cr3zy-dev))  
 > Licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
@@ -42,7 +42,7 @@ Simple multi-tool for ethical hacking and learning about computers.
 
 1. **Clone or download** this repository:
    ```bash
-   git clone https://github.com/jmeno/Hackzy.git
+   git clone https://github.com/Cr3zy-dev/Hackzy.git
    ```
 
 2. **Install required Python modules**:
@@ -103,7 +103,7 @@ See the [LICENSE](LICENSE) file for details.
 ## 🎯 Author
 
 - Name: **Cr3zy**
-- GitHub: [github.com/jmeno](https://github.com/jmeno)
+- GitHub: [github.com/Cr3zy-dev](https://github.com/Cr3zy-dev)
 
 ---
 
