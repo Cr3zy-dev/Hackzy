@@ -56,7 +56,7 @@ Simple multi-tool for ethical hacking and learning about computers.
 
 Run Hackzy:
 ```bash
-python Hackzy.py
+python hackzy.py
 ```
 
 Then simply select a tool from the interactive menu.
