@@ -66,6 +66,8 @@ Then simply select a tool from the interactive menu.
 ## 🗃️ Screenshots
 
 ![image](https://github.com/user-attachments/assets/662ccbb8-611d-4768-aaab-21149760ef5c)
+![image](https://github.com/user-attachments/assets/cb75fc4f-861d-4f0c-942d-619791e05d15)
+
 
 
 ---
