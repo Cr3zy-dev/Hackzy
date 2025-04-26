@@ -40,15 +40,56 @@ Simple multi-tool for ethical hacking and learning about computers.
 
 ## 📦 Installation
 
+### On Windows
+
 1. **Clone or download** this repository:
    ```bash
    git clone https://github.com/Cr3zy-dev/Hackzy.git
    ```
-
-2. **Install required Python modules**:
+2. **Navigate into the folder**:
+   ```bash
+   cd Hackzy
+   ```
+3. **Install required Python modules**:
    ```bash
    pip install -r requirements.txt
    ```
+4. **Run Hackzy**:
+   ```bash
+   python hackzy.py
+   ```
+
+---
+
+### On Linux
+
+1. **Make sure Python and pip are installed**:
+   ```bash
+   sudo apt update
+   sudo apt install python3 python3-pip
+   ```
+2. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Cr3zy-dev/Hackzy.git
+   ```
+3. **Navigate into the folder**:
+   ```bash
+   cd Hackzy
+   ```
+4. **Install dependencies**:
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+5. **Run Hackzy**:
+   ```bash
+   python3 hackzy.py
+   ```
+
+> **Note:**  
+> If you have issues with image modules, you might also need:
+> ```bash
+> sudo apt install python3-pil
+> ```
 
 ---
 
@@ -57,6 +98,10 @@ Simple multi-tool for ethical hacking and learning about computers.
 Run Hackzy:
 ```bash
 python hackzy.py
+```
+or on Linux:
+```bash
+python3 hackzy.py
 ```
 
 Then simply select a tool from the interactive menu.
@@ -67,8 +112,6 @@ Then simply select a tool from the interactive menu.
 
 ![image](https://github.com/user-attachments/assets/662ccbb8-611d-4768-aaab-21149760ef5c)
 ![image](https://github.com/user-attachments/assets/cb75fc4f-861d-4f0c-942d-619791e05d15)
-
-
 
 ---
 
@@ -109,4 +152,3 @@ See the [LICENSE](LICENSE) file for details.
 - GitHub: [github.com/Cr3zy-dev](https://github.com/Cr3zy-dev)
 
 ---
-
