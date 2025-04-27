@@ -95,7 +95,7 @@ Simple multi-tool for ethical hacking and learning about computers.
 ## ⚠️ Important for Kali Linux users
 
 If you encounter an error like "externally-managed-environment" when installing modules:
-- **Option 1:** Install with --break-system-packages flag:
+- **Option 1 (quick and easy):** Install with --break-system-packages flag:
    ```bash
    pip3 install -r requirements.txt --break-system-packages
    ```
