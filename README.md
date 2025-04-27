@@ -34,6 +34,9 @@ Simple multi-tool for ethical hacking and learning about computers.
 - Payload Generator
 - Hash Identifier
 - Directory/File Bruteforcer
+- Ping Tool
+- SSL/TLS Scanner
+- Open Directory Finder
 - ... and more coming soon!
 
 ---
