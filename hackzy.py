@@ -1,7 +1,7 @@
 ##
 ##   Hackzy  -  Simple multi-tool for ethical hacking and learning about computers
 ##   Author  :  Cr3zy
-##   Version :  1.0.0
+##   Version :  1.1.0
 ##   GitHub  :  https://github.com/Cr3zy-dev
 ##
 ##   This program is free software: you can redistribute it and/or modify
@@ -20,20 +20,42 @@
 ##   Copyright (C) 2025  Cr3zy
 ##
 
+# Check dependencies
+required_modules = ['colorama', 'whois', 'requests', 'phonenumbers', 'user_agents', 'PIL']
+missing_modules = []
+
+for module in required_modules:
+    try:
+        __import__(module)
+    except ImportError:
+        missing_modules.append(module)
+
+if missing_modules:
+    print("\n [!] Missing required modules:")
+    for m in missing_modules:
+        print(f"    - {m}")
+    print("\n Please install them manually using pip, e.g.:\n")
+    print("    pip install " + ' '.join(missing_modules))
+    input("\n Press Enter to exit...")
+    exit()
+
+# imports
 import os
 import sys
 import time
 import socket
-import whois
-
-# Install colorama if not installed
-try:
-    import colorama
-except ImportError:
-    os.system(f"{sys.executable} -m pip install colorama")
-    import colorama
-
+import json
+import urllib.request
+import re
+import requests
 from colorama import Fore, Style, init
+from PIL import Image
+from PIL.ExifTags import TAGS
+import phonenumbers
+from phonenumbers import geocoder, carrier, timezone
+import whois
+from user_agents import parse
+
 init(autoreset=True)
 
 # Cross-platform press-any-key
@@ -858,6 +880,173 @@ def dir_bruteforcer_screen():
         time.sleep(2)
         dir_bruteforcer_screen()
 
+# Ping Tool Logic
+def run_ping_tool():
+    import subprocess
+    clear()
+    target = input(f"{Fore.WHITE} Enter IP address or domain to ping (e.g., example.com): {Fore.GREEN}")
+    print(f"{Fore.RED} Pinging {target}...\n")
+
+    try:
+        if os.name == 'nt':
+            # Windows
+            result = subprocess.check_output(["ping", "-n", "4", target], text=True)
+        else:
+            # Linux / Mac
+            result = subprocess.check_output(["ping", "-c", "4", target], text=True)
+
+        print(Fore.WHITE + result)
+    except subprocess.CalledProcessError:
+        print(f"{Fore.RED} Ping failed. Host may be unreachable.")
+    except Exception as e:
+        print(f"{Fore.RED} Error: {e}")
+
+    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    main_menu()
+
+# Ping Tool UI
+def ping_tool_screen():
+    clear()
+    print(Fore.RED + r"""
+  _____ _               _______          _ 
+ |  __ (_)             |__   __|        | |
+ | |__) | _ __   __ _     | | ___   ___ | |
+ |  ___/ | '_ \ / _` |    | |/ _ \ / _ \| |
+ | |   | | | | | (_| |    | | (_) | (_) | |
+ |_|   |_|_| |_|\__, |    |_|\___/ \___/|_|
+                 __/ |                     
+                |___/                      
+    """)
+    print(Fore.WHITE + """ The Ping Tool checks the reachability of a host by sending ICMP Echo Requests.
+ It helps diagnose network connectivity issues.\n""")
+    print(f"{Fore.RED} [1]{Fore.WHITE} Run Ping Tool")
+    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+
+    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    if choice == "1":
+        run_ping_tool()
+    elif choice == "2":
+        main_menu()
+    else:
+        print(Fore.RED + " Invalid choice. Returning...")
+        time.sleep(2)
+        ping_tool_screen()
+
+# SSL/TLS Scanner Logic
+def run_ssl_tls_scanner():
+    import ssl
+    import socket
+    clear()
+    domain = input(f"{Fore.WHITE} Enter domain to scan (e.g., example.com): {Fore.GREEN}").strip()
+    print(f"{Fore.RED} Scanning SSL/TLS information for {domain}...\n")
+
+    try:
+        ctx = ssl.create_default_context()
+        with ctx.wrap_socket(socket.socket(), server_hostname=domain) as s:
+            s.settimeout(5.0)
+            s.connect((domain, 443))
+            cert = s.getpeercert()
+
+        print(f"{Fore.RED} Subject: {Fore.WHITE}{cert.get('subject')}")
+        print(f"{Fore.RED} Issuer: {Fore.WHITE}{cert.get('issuer')}")
+        print(f"{Fore.RED} Valid From: {Fore.WHITE}{cert.get('notBefore')}")
+        print(f"{Fore.RED} Valid Until: {Fore.WHITE}{cert.get('notAfter')}")
+        print(f"{Fore.RED} Serial Number: {Fore.WHITE}{cert.get('serialNumber')}")
+        print(f"{Fore.RED} Version: {Fore.WHITE}{cert.get('version')}")
+    except ssl.SSLError as e:
+        print(f"{Fore.RED} SSL Error: {e}")
+    except socket.gaierror:
+        print(f"{Fore.RED} Error: Could not resolve domain.")
+    except Exception as e:
+        print(f"{Fore.RED} Error: {e}")
+
+    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    main_menu()
+
+# SSL/TLS Scanner UI
+def ssl_tls_scanner_screen():
+    clear()
+    print(Fore.RED + r"""
+   _____ _____ _          _________ _       _____    _____                                 
+  / ____/ ____| |        / /__   __| |     / ____|  / ____|                                
+ | (___| (___ | |       / /   | |  | |    | (___   | (___   ___ __ _ _ __  _ __   ___ _ __ 
+  \___ \\___ \| |      / /    | |  | |     \___ \   \___ \ / __/ _` | '_ \| '_ \ / _ \ '__|
+  ____) |___) | |____ / /     | |  | |____ ____) |  ____) | (_| (_| | | | | | | |  __/ |   
+ |_____/_____/|______/_/      |_|  |______|_____/  |_____/ \___\__,_|_| |_|_| |_|\___|_|   
+    """)
+    print(Fore.WHITE + """ The SSL/TLS Scanner retrieves certificate information
+ from a domain including issuer, validity period, and subject details.\n""")
+    print(f"{Fore.RED} [1]{Fore.WHITE} Run SSL/TLS Scanner")
+    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+
+    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    if choice == "1":
+        run_ssl_tls_scanner()
+    elif choice == "2":
+        main_menu()
+    else:
+        print(Fore.RED + " Invalid choice. Returning...")
+        time.sleep(2)
+        ssl_tls_scanner_screen()
+
+# Open Directory Finder Logic
+def run_open_directory_finder():
+    clear()
+    target = input(f"{Fore.WHITE} Enter target URL (e.g., http://example.com/): {Fore.GREEN}").strip()
+
+    if not target.endswith('/'):
+        target += '/'
+
+    common_dirs = ["admin", "backup", "uploads", "files", "images", "downloads", "private", "logs"]
+
+    print(f"\n{Fore.RED} Scanning common directories...\n")
+
+    try:
+        import requests
+        for dir in common_dirs:
+            url = target + dir + '/'
+            try:
+                response = requests.get(url, timeout=5)
+                if "Index of" in response.text and response.status_code == 200:
+                    print(f"{Fore.GREEN} [+] Open directory found: {url}")
+                else:
+                    print(f"{Fore.WHITE} [-] {url}")
+            except requests.exceptions.RequestException:
+                print(f"{Fore.RED} [!] Failed to reach: {url}")
+    except Exception as e:
+        print(f"{Fore.RED} Error: {e}")
+
+    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    main_menu()
+
+# Open Directory Finder UI
+def open_directory_finder_screen():
+    clear()
+    print(Fore.RED + r"""
+   ____                     _____  _               _                     ______ _           _           
+  / __ \                   |  __ \(_)             | |                   |  ____(_)         | |          
+ | |  | |_ __   ___ _ __   | |  | |_ _ __ ___  ___| |_ ___  _ __ _   _  | |__   _ _ __   __| | ___ _ __ 
+ | |  | | '_ \ / _ \ '_ \  | |  | | | '__/ _ \/ __| __/ _ \| '__| | | | |  __| | | '_ \ / _` |/ _ \ '__|
+ | |__| | |_) |  __/ | | | | |__| | | | |  __/ (__| || (_) | |  | |_| | | |    | | | | | (_| |  __/ |   
+  \____/| .__/ \___|_| |_| |_____/|_|_|  \___|\___|\__\___/|_|   \__, | |_|    |_|_| |_|\__,_|\___|_|   
+        | |                                                       __/ |                                 
+        |_|                                                      |___/                                  
+    """)
+    print(Fore.WHITE + """ Open Directory Finder checks for publicly accessible open directories
+ on the target website. Open directories often expose sensitive files!\n""")
+    print(f"{Fore.RED} [1]{Fore.WHITE} Run Open Directory Finder")
+    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+
+    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    if choice == "1":
+        run_open_directory_finder()
+    elif choice == "2":
+        main_menu()
+    else:
+        print(Fore.RED + " Invalid choice. Returning...")
+        time.sleep(2)
+        open_directory_finder_screen()
+
 
 # Main Menu
 def main_menu():
@@ -868,7 +1057,7 @@ def main_menu():
     print(rf'{Fore.RED}   /\ \_\ \   /\  __ \   /\  ___\   /\ \/ /    /\___  \   /\ \_\ \   {Fore.RESET}')
     print(rf'{Fore.RED}   \ \  __ \  \ \  __ \  \ \ \____  \ \  _"-.  \/_/  /__  \ \____ \  {Fore.RESET}') 
     print(rf'{Fore.RED}    \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\   /\_____\  \/\_____\ {Fore.RESET}')
-    print(rf'{Fore.RED}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ version: 1.0.0{Fore.RESET}') 
+    print(rf'{Fore.RED}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ version: 1.1.0{Fore.RESET}') 
     print(rf'{Fore.RED}                                                                  {Fore.RESET}') 
     print(f" {Fore.RED}                             Made by Cr3zy{Fore.RESET}")
     print('')
@@ -878,9 +1067,9 @@ def main_menu():
     print(f"{Fore.RED} [03]{Fore.WHITE} Whois Lookup            {Fore.RED}[13]{Fore.WHITE} Payload Generator     {Fore.RED}[23]{Fore.WHITE} SOON")
     print(f"{Fore.RED} [04]{Fore.WHITE} DNS Resolver            {Fore.RED}[14]{Fore.WHITE} Hash Identifier       {Fore.RED}[24]{Fore.WHITE} SOON")
     print(f"{Fore.RED} [05]{Fore.WHITE} Email Scraper           {Fore.RED}[15]{Fore.WHITE} Dir/File Bruteforcer  {Fore.RED}[25]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [06]{Fore.WHITE} Traceroute              {Fore.RED}[16]{Fore.WHITE} SOON                  {Fore.RED}[26]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [07]{Fore.WHITE} Header Analyzer         {Fore.RED}[17]{Fore.WHITE} SOON                  {Fore.RED}[27]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [08]{Fore.WHITE} Phone Info Lookup       {Fore.RED}[18]{Fore.WHITE} SOON                  {Fore.RED}[28]{Fore.WHITE} SOON")
+    print(f"{Fore.RED} [06]{Fore.WHITE} Traceroute              {Fore.RED}[16]{Fore.WHITE} Ping Tool             {Fore.RED}[26]{Fore.WHITE} SOON")
+    print(f"{Fore.RED} [07]{Fore.WHITE} Header Analyzer         {Fore.RED}[17]{Fore.WHITE} SSL/TLS Scanner       {Fore.RED}[27]{Fore.WHITE} SOON")
+    print(f"{Fore.RED} [08]{Fore.WHITE} Phone Info Lookup       {Fore.RED}[18]{Fore.WHITE} Open Directory Finder {Fore.RED}[28]{Fore.WHITE} SOON")
     print(f"{Fore.RED} [09]{Fore.WHITE} Reverse DNS Lookup      {Fore.RED}[19]{Fore.WHITE} SOON                  {Fore.RED}[29]{Fore.WHITE} SOON")
     print(f"{Fore.RED} [10]{Fore.WHITE} User-Agent Parser       {Fore.RED}[20]{Fore.WHITE} SOON                  {Fore.RED}[30]{Fore.WHITE} SOON")  
     print('')
@@ -919,11 +1108,17 @@ def main_menu():
         hash_identifier_screen()
     elif choice == "15":
         dir_bruteforcer_screen()
+    elif choice == "16":
+        ping_tool_screen()
+    elif choice == "17":
+        ssl_tls_scanner_screen()
+    elif choice == "18":
+        open_directory_finder_screen()
     elif choice == "00":
         print(Fore.GREEN + " Goodbye!" + Fore.RESET)
         sys.exit()
     else:
-        print(Fore.RED + " Invalid or unavailable. Returning...")
+        print(Fore.RED + " Invalid choice. Returning to main menu...")
         time.sleep(2)
         main_menu()
 
