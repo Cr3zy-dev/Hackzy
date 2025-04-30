@@ -1,7 +1,7 @@
 ##
 ##   Hackzy  -  Simple multi-tool for ethical hacking and learning about computers
 ##   Author  :  Cr3zy
-##   Version :  1.1.0
+##   Version :  1.1.1
 ##   GitHub  :  https://github.com/Cr3zy-dev
 ##
 ##   This program is free software: you can redistribute it and/or modify
@@ -1057,7 +1057,7 @@ def main_menu():
     print(rf'{Fore.RED}   /\ \_\ \   /\  __ \   /\  ___\   /\ \/ /    /\___  \   /\ \_\ \   {Fore.RESET}')
     print(rf'{Fore.RED}   \ \  __ \  \ \  __ \  \ \ \____  \ \  _"-.  \/_/  /__  \ \____ \  {Fore.RESET}') 
     print(rf'{Fore.RED}    \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\   /\_____\  \/\_____\ {Fore.RESET}')
-    print(rf'{Fore.RED}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ version: 1.1.0{Fore.RESET}') 
+    print(rf'{Fore.RED}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ version: 1.1.1{Fore.RESET}') 
     print(rf'{Fore.RED}                                                                  {Fore.RESET}') 
     print(f" {Fore.RED}                             Made by Cr3zy{Fore.RESET}")
     print('')
@@ -1076,7 +1076,7 @@ def main_menu():
     print(f"{Fore.RED} [00]{Fore.WHITE} Exit")
     print('')
 
-    choice = input(Fore.RED + ' [?]> ' + Fore.WHITE)
+    choice = input(Fore.RED + ' [?]> ' + Fore.WHITE).lstrip('0')
 
     if choice == "1":
         port_scanner_screen()
