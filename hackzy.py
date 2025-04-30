@@ -1073,7 +1073,7 @@ def main_menu():
     print(f"{Fore.RED} [09]{Fore.WHITE} Reverse DNS Lookup      {Fore.RED}[19]{Fore.WHITE} SOON                  {Fore.RED}[29]{Fore.WHITE} SOON")
     print(f"{Fore.RED} [10]{Fore.WHITE} User-Agent Parser       {Fore.RED}[20]{Fore.WHITE} SOON                  {Fore.RED}[30]{Fore.WHITE} SOON")  
     print('')
-    print(f"{Fore.RED} [00]{Fore.WHITE} Exit")
+    print(f"{Fore.RED} [99]{Fore.WHITE} Exit")
     print('')
 
     choice = input(Fore.RED + ' [?]> ' + Fore.WHITE).lstrip('0')
@@ -1114,7 +1114,7 @@ def main_menu():
         ssl_tls_scanner_screen()
     elif choice == "18":
         open_directory_finder_screen()
-    elif choice == "00":
+    elif choice == "99":
         print(Fore.GREEN + " Goodbye!" + Fore.RESET)
         sys.exit()
     else:
