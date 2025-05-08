@@ -1,7 +1,8 @@
+
 ##
 ##   Hackzy  -  Simple multi-tool for ethical hacking and learning about computers
 ##   Author  :  Cr3zy
-##   Version :  1.1.1
+##   Version :  2.0.0
 ##   GitHub  :  https://github.com/Cr3zy-dev
 ##
 ##   This program is free software: you can redistribute it and/or modify
@@ -60,7 +61,7 @@ init(autoreset=True)
 
 # Cross-platform press-any-key
 def wait_for_keypress():
-    print(f"{Fore.RED} Press any key to continue...", end='', flush=True)
+    print(f"{MENU_COLOR} Press any key to continue...", end='', flush=True)
     try:
         import msvcrt
         msvcrt.getch()
@@ -83,27 +84,27 @@ def clear():
 def run_port_scanner():
     clear()
     target = input(f"{Fore.WHITE} Enter IP address or domain to scan (e.g., example.com): {Fore.GREEN}")
-    print(f"{Fore.RED} Scanning ports 1-100 on {target}...\n")
+    print(f"{MENU_COLOR} Scanning ports 1-100 on {target}...\n")
     open_ports = []
     for port in range(1, 101):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(0.5)
         result = sock.connect_ex((target, port))
         if result == 0:
-            print(f"{Fore.WHITE} [{Fore.RED}OPEN{Fore.WHITE}] Port {port}")
+            print(f"{Fore.WHITE} [{MENU_COLOR}OPEN{Fore.WHITE}] Port {port}")
             open_ports.append(port)
         sock.close()
     if not open_ports:
-        print(f"\n{Fore.RED} No open ports found.")
+        print(f"\n{MENU_COLOR} No open ports found.")
     else:
-        print(f"\n{Fore.WHITE} Scan complete. {Fore.RED}{len(open_ports)} open port(s) found.")
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+        print(f"\n{Fore.WHITE} Scan complete. {MENU_COLOR}{len(open_ports)} open port(s) found.")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Port Scanner UI
 def port_scanner_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____           _      _____                                 
  |  __ \         | |    / ____|                                
  | |__) |__  _ __| |_  | (___   ___ __ _ _ __  _ __   ___ _ __ 
@@ -116,16 +117,16 @@ def port_scanner_screen():
  could be vulnerable or useful in a network analysis.
 
  Only use this tool on systems you own or have permission to analyze.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Port Scanner")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Port Scanner")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
     
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_port_scanner()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         port_scanner_screen()
 
@@ -136,31 +137,31 @@ import urllib.request
 def run_ip_tracker():
     clear()
     target_ip = input(f"{Fore.WHITE} Enter IP address to track: {Fore.GREEN}")
-    print(f"{Fore.RED} Fetching info for {target_ip}...\n")
+    print(f"{MENU_COLOR} Fetching info for {target_ip}...\n")
     try:
         with urllib.request.urlopen(f"http://ip-api.com/json/{target_ip}") as response:
             data = json.load(response)
             if data['status'] == 'success':
-                print(f"{Fore.RED} IP Address: {Fore.WHITE}{data['query']}")
-                print(f"{Fore.RED} Country:    {Fore.WHITE}{data['country']} ({data['countryCode']})")
-                print(f"{Fore.RED} Region:     {Fore.WHITE}{data['regionName']}")
-                print(f"{Fore.RED} City:       {Fore.WHITE}{data['city']}")
-                print(f"{Fore.RED} ISP:        {Fore.WHITE}{data['isp']}")
-                print(f"{Fore.RED} Org:        {Fore.WHITE}{data['org']}")
-                print(f"{Fore.RED} Lat/Lon:    {Fore.WHITE}{data['lat']}, {data['lon']}")
-                print(f"{Fore.RED} Timezone:   {Fore.WHITE}{data['timezone']}")
+                print(f"{MENU_COLOR} IP Address: {Fore.WHITE}{data['query']}")
+                print(f"{MENU_COLOR} Country:    {Fore.WHITE}{data['country']} ({data['countryCode']})")
+                print(f"{MENU_COLOR} Region:     {Fore.WHITE}{data['regionName']}")
+                print(f"{MENU_COLOR} City:       {Fore.WHITE}{data['city']}")
+                print(f"{MENU_COLOR} ISP:        {Fore.WHITE}{data['isp']}")
+                print(f"{MENU_COLOR} Org:        {Fore.WHITE}{data['org']}")
+                print(f"{MENU_COLOR} Lat/Lon:    {Fore.WHITE}{data['lat']}, {data['lon']}")
+                print(f"{MENU_COLOR} Timezone:   {Fore.WHITE}{data['timezone']}")
             else:
-                print(f"{Fore.RED} Failed to fetch data. Reason: {data['message']}")
+                print(f"{MENU_COLOR} Failed to fetch data. Reason: {data['message']}")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
     
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # IP Tracker UI
 def ip_tracker_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____ _____    _______             _             
  |_   _|  __ \  |__   __|           | |            
    | | | |__) |    | |_ __ __ _  ___| | _____ _ __ 
@@ -170,16 +171,16 @@ def ip_tracker_screen():
     """)
     print(Fore.WHITE + """ IP Tracker gathers basic information about an IP address such as
  country, region, city, ISP, and more using public APIs.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run IP Tracker")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run IP Tracker")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
     
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_ip_tracker()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         ip_tracker_screen()
 
@@ -187,25 +188,25 @@ def ip_tracker_screen():
 def run_whois_lookup():
     clear()
     domain = input(f"{Fore.WHITE} Enter domain to lookup (e.g., example.com): {Fore.GREEN}")
-    print(f"{Fore.RED} Fetching WHOIS data for {domain}...\n")
+    print(f"{MENU_COLOR} Fetching WHOIS data for {domain}...\n")
     try:
         w = whois.whois(domain)
-        print(f"{Fore.RED} Domain Name:   {Fore.WHITE}{w.domain_name}")
-        print(f"{Fore.RED} Registrar:     {Fore.WHITE}{w.registrar}")
-        print(f"{Fore.RED} Creation Date: {Fore.WHITE}{w.creation_date}")
-        print(f"{Fore.RED} Expiration:    {Fore.WHITE}{w.expiration_date}")
-        print(f"{Fore.RED} Name Servers:  {Fore.WHITE}{w.name_servers}")
-        print(f"{Fore.RED} Emails:        {Fore.WHITE}{w.emails}")
+        print(f"{MENU_COLOR} Domain Name:   {Fore.WHITE}{w.domain_name}")
+        print(f"{MENU_COLOR} Registrar:     {Fore.WHITE}{w.registrar}")
+        print(f"{MENU_COLOR} Creation Date: {Fore.WHITE}{w.creation_date}")
+        print(f"{MENU_COLOR} Expiration:    {Fore.WHITE}{w.expiration_date}")
+        print(f"{MENU_COLOR} Name Servers:  {Fore.WHITE}{w.name_servers}")
+        print(f"{MENU_COLOR} Emails:        {Fore.WHITE}{w.emails}")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
     
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Whois Lookup UI
 def whois_lookup_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
  __          ___           _       _                 _                
  \ \        / / |         (_)     | |               | |               
   \ \  /\  / /| |__   ___  _ ___  | |     ___   ___ | | ___   _ _ __  
@@ -217,16 +218,16 @@ def whois_lookup_screen():
     """)
     print(Fore.WHITE + """ Whois Lookup allows you to fetch domain registration data from public records.
  This includes registrar info, creation/expiration dates, and nameservers.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Whois Lookup")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Whois Lookup")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_whois_lookup()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         whois_lookup_screen()
 
@@ -234,19 +235,19 @@ def whois_lookup_screen():
 def run_dns_resolver():
     clear()
     domain = input(f"{Fore.WHITE} Enter domain to resolve (e.g., google.com): {Fore.GREEN}")
-    print(f"{Fore.RED} Resolving {domain}...\n")
+    print(f"{MENU_COLOR} Resolving {domain}...\n")
     try:
         ip = socket.gethostbyname(domain)
-        print(f"{Fore.RED} Resolved IP: {Fore.WHITE}{ip}")
+        print(f"{MENU_COLOR} Resolved IP: {Fore.WHITE}{ip}")
     except socket.gaierror:
-        print(f"{Fore.RED} Unable to resolve domain.")
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+        print(f"{MENU_COLOR} Unable to resolve domain.")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # DNS Resolver UI
 def dns_resolver_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____  _   _  _____   _____                 _                
  |  __ \| \ | |/ ____| |  __ \               | |               
  | |  | |  \| | (___   | |__) |___  ___  ___ | |_   _____ _ __ 
@@ -256,16 +257,16 @@ def dns_resolver_screen():
     """)
     print(Fore.WHITE + """ DNS Resolver translates a domain name into its IP address.
  This is useful for checking where a domain points to.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run DNS Resolver")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run DNS Resolver")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_dns_resolver()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         dns_resolver_screen()
 
@@ -276,26 +277,26 @@ import requests
 def run_email_scraper():
     clear()
     url = input(f"{Fore.WHITE} Enter URL to scrape emails from (e.g., https://example.com): {Fore.GREEN}")
-    print(f"{Fore.RED} Scanning {url} for email addresses...\n")
+    print(f"{MENU_COLOR} Scanning {url} for email addresses...\n")
     try:
         response = requests.get(url, timeout=10)
         content = response.text
         emails = re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", content)
         found = list(set(emails))  # Remove duplicates
         if found:
-            print(f"{Fore.RED} Found {len(found)} email address(es):\n")
+            print(f"{MENU_COLOR} Found {len(found)} email address(es):\n")
             for email in found:
                 print(f"{Fore.WHITE} - {email}")
         else:
-            print(f"{Fore.RED} No emails found.")
+            print(f"{MENU_COLOR} No emails found.")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+        print(f"{MENU_COLOR} Error: {e}")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 def email_scraper_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   ______                 _ _    _____                                
  |  ____|               (_) |  / ____|                               
  | |__   _ __ ___   __ _ _| | | (___   ___ _ __ __ _ _ __   ___ _ __ 
@@ -307,16 +308,16 @@ def email_scraper_screen():
     """)
     print(Fore.WHITE + """ Email Scraper extracts all email addresses from the given webpage using
  HTML content parsing and regular expressions.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Email Scraper")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Email Scraper")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_email_scraper()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         email_scraper_screen()
 
@@ -325,7 +326,7 @@ def run_traceroute():
     import subprocess
     clear()
     target = input(f"{Fore.WHITE} Enter domain or IP to trace route (e.g., example.com): {Fore.GREEN}")
-    print(f"{Fore.RED} Tracing route to {target}...\n")
+    print(f"{MENU_COLOR} Tracing route to {target}...\n")
     try:
         if os.name == 'nt':
             # Windows
@@ -335,14 +336,14 @@ def run_traceroute():
             result = subprocess.check_output(["traceroute", target], text=True)
         print(Fore.WHITE + result)
     except Exception as e:
-        print(f"{Fore.RED} Error running traceroute: {e}")
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+        print(f"{MENU_COLOR} Error running traceroute: {e}")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Traceroute UI
 def traceroute_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _______                                 _       
  |__   __|                               | |      
     | |_ __ __ _  ___ ___ _ __ ___  _   _| |_ ___ 
@@ -352,16 +353,16 @@ def traceroute_screen():
     """)
     print(Fore.WHITE + """ Traceroute reveals the path that data takes to reach a destination.
  Each line represents a 'hop' through a router or network node.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Traceroute")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Traceroute")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_traceroute()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         traceroute_screen()
 
@@ -369,28 +370,28 @@ def traceroute_screen():
 def run_header_analyzer():
     clear()
     url = input(f"{Fore.WHITE} Enter website URL (include http/https): {Fore.GREEN}")
-    print(f"{Fore.RED} Fetching headers from {url}...\n")
+    print(f"{MENU_COLOR} Fetching headers from {url}...\n")
     
     try:
         response = requests.get(url)
         headers = response.headers
         print(Fore.WHITE + " Headers:\n")
         for key, value in headers.items():
-            print(f"{Fore.RED} {key}: {Fore.WHITE}{value}")
+            print(f"{MENU_COLOR} {key}: {Fore.WHITE}{value}")
     except requests.exceptions.MissingSchema:
-        print(f"{Fore.RED} Error: Invalid URL format. Please include http:// or https://")
+        print(f"{MENU_COLOR} Error: Invalid URL format. Please include http:// or https://")
     except requests.exceptions.ConnectionError:
-        print(f"{Fore.RED} Error: Could not connect to the target.")
+        print(f"{MENU_COLOR} Error: Could not connect to the target.")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
     
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Header Analyzer UI
 def header_analyzer_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _    _                _                                  _                    
  | |  | |              | |               /\               | |                   
  | |__| | ___  __ _  __| | ___ _ __     /  \   _ __   __ _| |_   _ _______ _ __ 
@@ -403,16 +404,16 @@ def header_analyzer_screen():
     print(Fore.WHITE + """ Header Analyzer retrieves and displays HTTP response headers
  from a given URL. Useful for analyzing server behavior.\n""")
     
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Header Analyzer")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Header Analyzer")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
     
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_header_analyzer()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         header_analyzer_screen()
 
@@ -423,28 +424,28 @@ from phonenumbers import geocoder, carrier, timezone
 def run_phone_info_lookup():
     clear()
     number = input(f"{Fore.WHITE} Enter phone number with country code (e.g., +14155552671): {Fore.GREEN}")
-    print(f"{Fore.RED} Analyzing phone number...\n")
+    print(f"{MENU_COLOR} Analyzing phone number...\n")
     try:
         parsed = phonenumbers.parse(number)
         if not phonenumbers.is_valid_number(parsed):
-            print(f"{Fore.RED} Invalid phone number.")
+            print(f"{MENU_COLOR} Invalid phone number.")
         else:
-            print(f"{Fore.RED} Number:       {Fore.WHITE}{number}")
-            print(f"{Fore.RED} Country:      {Fore.WHITE}{geocoder.description_for_number(parsed, 'en')}")
-            print(f"{Fore.RED} Carrier:      {Fore.WHITE}{carrier.name_for_number(parsed, 'en')}")
-            print(f"{Fore.RED} Timezone(s):  {Fore.WHITE}{', '.join(timezone.time_zones_for_number(parsed))}")
-            print(f"{Fore.RED} Possible:     {Fore.WHITE}{phonenumbers.is_possible_number(parsed)}")
-            print(f"{Fore.RED} Valid:        {Fore.WHITE}{phonenumbers.is_valid_number(parsed)}")
+            print(f"{MENU_COLOR} Number:       {Fore.WHITE}{number}")
+            print(f"{MENU_COLOR} Country:      {Fore.WHITE}{geocoder.description_for_number(parsed, 'en')}")
+            print(f"{MENU_COLOR} Carrier:      {Fore.WHITE}{carrier.name_for_number(parsed, 'en')}")
+            print(f"{MENU_COLOR} Timezone(s):  {Fore.WHITE}{', '.join(timezone.time_zones_for_number(parsed))}")
+            print(f"{MENU_COLOR} Possible:     {Fore.WHITE}{phonenumbers.is_possible_number(parsed)}")
+            print(f"{MENU_COLOR} Valid:        {Fore.WHITE}{phonenumbers.is_valid_number(parsed)}")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
     
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Phone Info Lookup UI
 def phone_info_lookup_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____  _                        _____        __        _                 _                
  |  __ \| |                      |_   _|      / _|      | |               | |               
  | |__) | |__   ___  _ __   ___    | |  _ __ | |_ ___   | |     ___   ___ | | ___   _ _ __  
@@ -456,16 +457,16 @@ def phone_info_lookup_screen():
     """)
     print(Fore.WHITE + """ Phone Info Lookup uses the phonenumbers library to retrieve general information
  about phone numbers, including the country, carrier, and timezone.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Phone Info Lookup")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Phone Info Lookup")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_phone_info_lookup()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         phone_info_lookup_screen()
 
@@ -473,22 +474,22 @@ def phone_info_lookup_screen():
 def run_reverse_dns():
     clear()
     ip_address = input(f"{Fore.WHITE} Enter IP address to reverse lookup: {Fore.GREEN}")
-    print(f"{Fore.RED} Performing reverse DNS lookup on {ip_address}...\n")
+    print(f"{MENU_COLOR} Performing reverse DNS lookup on {ip_address}...\n")
     try:
         host, _, _ = socket.gethostbyaddr(ip_address)
-        print(f"{Fore.RED} Hostname: {Fore.WHITE}{host}")
+        print(f"{MENU_COLOR} Hostname: {Fore.WHITE}{host}")
     except socket.herror:
-        print(f"{Fore.RED} No PTR record found or reverse DNS lookup failed.")
+        print(f"{MENU_COLOR} No PTR record found or reverse DNS lookup failed.")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Reverse DNS Lookup UI
 def reverse_dns_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____                                _____  _   _  _____   _                 _                
  |  __ \                              |  __ \| \ | |/ ____| | |               | |               
  | |__) |_____   _____ _ __ ___  ___  | |  | |  \| | (___   | |     ___   ___ | | ___   _ _ __  
@@ -500,16 +501,16 @@ def reverse_dns_screen():
     """)
     print(Fore.WHITE + """ Reverse DNS Lookup tries to resolve an IP address back into a hostname.
  It uses the PTR records associated with the IP address (if available).\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Reverse DNS Lookup")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Reverse DNS Lookup")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_reverse_dns()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         reverse_dns_screen()
 
@@ -517,7 +518,7 @@ def reverse_dns_screen():
 def run_user_agent_parser():
     clear()
     ua_string = input(f"{Fore.WHITE} Enter a User-Agent string to parse: {Fore.GREEN}")
-    print(f"{Fore.RED} Parsing User-Agent...\n")
+    print(f"{MENU_COLOR} Parsing User-Agent...\n")
     try:
         from user_agents import parse
     except ImportError:
@@ -526,21 +527,21 @@ def run_user_agent_parser():
 
     try:
         ua = parse(ua_string)
-        print(f"{Fore.RED} Device Type:  {Fore.WHITE}{'Mobile' if ua.is_mobile else 'Tablet' if ua.is_tablet else 'PC' if ua.is_pc else 'Other'}")
-        print(f"{Fore.RED} OS:           {Fore.WHITE}{ua.os.family} {ua.os.version_string}")
-        print(f"{Fore.RED} Browser:      {Fore.WHITE}{ua.browser.family} {ua.browser.version_string}")
-        print(f"{Fore.RED} Is Bot:       {Fore.WHITE}{ua.is_bot}")
-        print(f"{Fore.RED} Touch Capable:{Fore.WHITE}{ua.is_touch_capable}")
+        print(f"{MENU_COLOR} Device Type:  {Fore.WHITE}{'Mobile' if ua.is_mobile else 'Tablet' if ua.is_tablet else 'PC' if ua.is_pc else 'Other'}")
+        print(f"{MENU_COLOR} OS:           {Fore.WHITE}{ua.os.family} {ua.os.version_string}")
+        print(f"{MENU_COLOR} Browser:      {Fore.WHITE}{ua.browser.family} {ua.browser.version_string}")
+        print(f"{MENU_COLOR} Is Bot:       {Fore.WHITE}{ua.is_bot}")
+        print(f"{MENU_COLOR} Touch Capable:{Fore.WHITE}{ua.is_touch_capable}")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # User Agent Parser UI
 def user_agent_parser_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _    _                                             _     _____                         
  | |  | |                      /\                   | |   |  __ \                        
  | |  | |___  ___ _ __ ______ /  \   __ _  ___ _ __ | |_  | |__) |_ _ _ __ ___  ___ _ __ 
@@ -552,16 +553,16 @@ def user_agent_parser_screen():
     """)
     print(Fore.WHITE + """ This tool parses a User-Agent string to identify the browser,
  operating system, device type, and other properties.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run User-Agent Parser")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run User-Agent Parser")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
     
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_user_agent_parser()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         user_agent_parser_screen()
 
@@ -577,25 +578,25 @@ def run_metadata_extractor():
         exif_data = image._getexif()
 
         if exif_data is not None:
-            print(f"\n{Fore.RED} Extracted Metadata:\n")
+            print(f"\n{MENU_COLOR} Extracted Metadata:\n")
             for tag_id, value in exif_data.items():
                 tag = TAGS.get(tag_id, tag_id)
                 print(f"{Fore.WHITE} {tag}: {Fore.GREEN}{value}")
         else:
-            print(f"\n{Fore.RED} No metadata found in this image.")
+            print(f"\n{MENU_COLOR} No metadata found in this image.")
 
     except FileNotFoundError:
-        print(f"\n{Fore.RED} File not found. Please check the path.")
+        print(f"\n{MENU_COLOR} File not found. Please check the path.")
     except Exception as e:
-        print(f"\n{Fore.RED} Error: {e}")
+        print(f"\n{MENU_COLOR} Error: {e}")
     
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Metadata Extractor UI
 def metadata_extractor_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   __  __      _            _       _          ______      _                  _             
  |  \/  |    | |          | |     | |        |  ____|    | |                | |            
  | \  / | ___| |_ __ _  __| | __ _| |_ __ _  | |__  __  _| |_ _ __ __ _  ___| |_ ___  _ __ 
@@ -607,16 +608,16 @@ def metadata_extractor_screen():
  device info, GPS coordinates, timestamps, and camera settings.
 
  Useful in OSINT investigations, but always analyze files you are authorized to access.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Metadata Extractor")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Metadata Extractor")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_metadata_extractor()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         metadata_extractor_screen()
 
@@ -631,7 +632,7 @@ def run_subdomain_finder():
 
     found_subdomains = []
 
-    print(f"\n{Fore.RED} Scanning for subdomains on {domain}...\n")
+    print(f"\n{MENU_COLOR} Scanning for subdomains on {domain}...\n")
     for sub in subdomains:
         url = f"http://{sub}.{domain}"
         try:
@@ -645,14 +646,14 @@ def run_subdomain_finder():
             pass
 
     if not found_subdomains:
-        print(f"\n{Fore.RED} No subdomains found or reachable.")
+        print(f"\n{MENU_COLOR} No subdomains found or reachable.")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 def subdomain_finder_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
    _____       _         _                       _         ______ _           _           
   / ____|     | |       | |                     (_)       |  ____(_)         | |          
  | (___  _   _| |__   __| | ___  _ __ ___   __ _ _ _ __   | |__   _ _ __   __| | ___ _ __ 
@@ -662,33 +663,33 @@ def subdomain_finder_screen():
     """)
     print(Fore.WHITE + """ A Subdomain Finder tries to discover subdomains related to a domain.
  Useful for footprinting and reconnaissance during ethical hacking.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Subdomain Finder")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Subdomain Finder")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_subdomain_finder()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         subdomain_finder_screen()
 
 def run_payload_generator():
     clear()
-    print(f"{Fore.RED} Select payload type:\n")
-    print(f"{Fore.RED} [1]{Fore.WHITE} XSS Payloads")
-    print(f"{Fore.RED} [2]{Fore.WHITE} SQL Injection Payloads")
-    print(f"{Fore.RED} [3]{Fore.WHITE} Command Injection Payloads")
-    print(f"{Fore.RED} [4]{Fore.WHITE} Local File Inclusion (LFI) Payloads")
-    print(f"{Fore.RED} [5]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} Select payload type:\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} XSS Payloads")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} SQL Injection Payloads")
+    print(f"{MENU_COLOR} [3]{Fore.WHITE} Command Injection Payloads")
+    print(f"{MENU_COLOR} [4]{Fore.WHITE} Local File Inclusion (LFI) Payloads")
+    print(f"{MENU_COLOR} [5]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     
     if choice == "1":
         clear()
-        print(f"{Fore.RED} XSS Payloads:\n")
+        print(f"{MENU_COLOR} XSS Payloads:\n")
         xss_payloads = [
             "<script>alert(1)</script>",
             "\"><script>alert('XSS')</script>",
@@ -699,7 +700,7 @@ def run_payload_generator():
             print(f"{Fore.GREEN} {payload}")
     elif choice == "2":
         clear()
-        print(f"{Fore.RED} SQL Injection Payloads:\n")
+        print(f"{MENU_COLOR} SQL Injection Payloads:\n")
         sql_payloads = [
             "' OR '1'='1",
             "'; DROP TABLE users; --",
@@ -710,7 +711,7 @@ def run_payload_generator():
             print(f"{Fore.GREEN} {payload}")
     elif choice == "3":
         clear()
-        print(f"{Fore.RED} Command Injection Payloads:\n")
+        print(f"{MENU_COLOR} Command Injection Payloads:\n")
         cmd_injection_payloads = [
             "test; ls -la",
             "test && whoami",
@@ -721,7 +722,7 @@ def run_payload_generator():
             print(f"{Fore.GREEN} {payload}")
     elif choice == "4":
         clear()
-        print(f"{Fore.RED} Local File Inclusion (LFI) Payloads:\n")
+        print(f"{MENU_COLOR} Local File Inclusion (LFI) Payloads:\n")
         lfi_payloads = [
             "../../etc/passwd",
             "../../../../../../etc/shadow",
@@ -733,16 +734,16 @@ def run_payload_generator():
     elif choice == "5":
         main_menu()
     else:
-        print(f"{Fore.RED} Invalid choice. Returning...")
+        print(f"{MENU_COLOR} Invalid choice. Returning...")
         time.sleep(2)
         run_payload_generator()
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 def payload_generator_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____            _                 _    _____                           _             
  |  __ \          | |               | |  / ____|                         | |            
  | |__) |_ _ _   _| | ___   __ _  __| | | |  __  ___ _ __   ___ _ __ __ _| |_ ___  _ __ 
@@ -756,16 +757,16 @@ def payload_generator_screen():
  like XSS, SQLi, Command Injection, and LFI.
 
  These payloads can be used during penetration testing and ethical hacking.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Payload Generator")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Payload Generator")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_payload_generator()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         payload_generator_screen()
 
@@ -784,20 +785,20 @@ def run_hash_identifier():
         128: "SHA-512"
     }
 
-    print(f"\n{Fore.RED} Analyzing hash...\n")
+    print(f"\n{MENU_COLOR} Analyzing hash...\n")
     possible_hash = hash_lengths.get(len(hash_input))
 
     if possible_hash:
         print(f"{Fore.WHITE} Possible hash type: {Fore.GREEN}{possible_hash}")
     else:
-        print(f"{Fore.RED} Unable to determine hash type based on length.")
+        print(f"{MENU_COLOR} Unable to determine hash type based on length.")
     
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 def hash_identifier_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _    _           _       _____    _            _   _  __ _           
  | |  | |         | |     |_   _|  | |          | | (_)/ _(_)          
  | |__| | __ _ ___| |__     | |  __| | ___ _ __ | |_ _| |_ _  ___ _ __ 
@@ -809,16 +810,16 @@ def hash_identifier_screen():
  used based on the hash length (e.g., MD5, SHA-1, SHA-256).
 
  Useful for forensic investigations or decoding attempts.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Hash Identifier")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Hash Identifier")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_hash_identifier()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         hash_identifier_screen()
 
@@ -835,7 +836,7 @@ def run_dir_bruteforcer():
     if not url.endswith('/'):
         url += '/'
 
-    print(f"\n{Fore.RED} Scanning {url} for directories/files...\n")
+    print(f"\n{MENU_COLOR} Scanning {url} for directories/files...\n")
 
     for word in wordlist:
         test_url = url + word
@@ -846,14 +847,14 @@ def run_dir_bruteforcer():
             elif response.status_code == 403:
                 print(f"{Fore.YELLOW} Forbidden (but exists!): {Fore.WHITE}{test_url}")
         except requests.RequestException:
-            print(f"{Fore.RED} Error connecting to {test_url}")
+            print(f"{MENU_COLOR} Error connecting to {test_url}")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 def dir_bruteforcer_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____  _               _                       ________ _ _        ____             _        __                        
  |  __ \(_)             | |                     / /  ____(_) |      |  _ \           | |      / _|                       
  | |  | |_ _ __ ___  ___| |_ ___  _ __ _   _   / /| |__   _| | ___  | |_) |_ __ _   _| |_ ___| |_ ___  _ __ ___ ___ _ __ 
@@ -867,16 +868,16 @@ def dir_bruteforcer_screen():
  admin panels, folders, or important files by brute-forcing URLs.
 
  Useful for penetration testing or security assessments.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Directory/File Bruteforcer")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Directory/File Bruteforcer")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_dir_bruteforcer()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         dir_bruteforcer_screen()
 
@@ -885,7 +886,7 @@ def run_ping_tool():
     import subprocess
     clear()
     target = input(f"{Fore.WHITE} Enter IP address or domain to ping (e.g., example.com): {Fore.GREEN}")
-    print(f"{Fore.RED} Pinging {target}...\n")
+    print(f"{MENU_COLOR} Pinging {target}...\n")
 
     try:
         if os.name == 'nt':
@@ -897,17 +898,17 @@ def run_ping_tool():
 
         print(Fore.WHITE + result)
     except subprocess.CalledProcessError:
-        print(f"{Fore.RED} Ping failed. Host may be unreachable.")
+        print(f"{MENU_COLOR} Ping failed. Host may be unreachable.")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Ping Tool UI
 def ping_tool_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
   _____ _               _______          _ 
  |  __ (_)             |__   __|        | |
  | |__) | _ __   __ _     | | ___   ___ | |
@@ -919,16 +920,16 @@ def ping_tool_screen():
     """)
     print(Fore.WHITE + """ The Ping Tool checks the reachability of a host by sending ICMP Echo Requests.
  It helps diagnose network connectivity issues.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Ping Tool")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Ping Tool")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_ping_tool()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         ping_tool_screen()
 
@@ -938,7 +939,7 @@ def run_ssl_tls_scanner():
     import socket
     clear()
     domain = input(f"{Fore.WHITE} Enter domain to scan (e.g., example.com): {Fore.GREEN}").strip()
-    print(f"{Fore.RED} Scanning SSL/TLS information for {domain}...\n")
+    print(f"{MENU_COLOR} Scanning SSL/TLS information for {domain}...\n")
 
     try:
         ctx = ssl.create_default_context()
@@ -947,26 +948,26 @@ def run_ssl_tls_scanner():
             s.connect((domain, 443))
             cert = s.getpeercert()
 
-        print(f"{Fore.RED} Subject: {Fore.WHITE}{cert.get('subject')}")
-        print(f"{Fore.RED} Issuer: {Fore.WHITE}{cert.get('issuer')}")
-        print(f"{Fore.RED} Valid From: {Fore.WHITE}{cert.get('notBefore')}")
-        print(f"{Fore.RED} Valid Until: {Fore.WHITE}{cert.get('notAfter')}")
-        print(f"{Fore.RED} Serial Number: {Fore.WHITE}{cert.get('serialNumber')}")
-        print(f"{Fore.RED} Version: {Fore.WHITE}{cert.get('version')}")
+        print(f"{MENU_COLOR} Subject: {Fore.WHITE}{cert.get('subject')}")
+        print(f"{MENU_COLOR} Issuer: {Fore.WHITE}{cert.get('issuer')}")
+        print(f"{MENU_COLOR} Valid From: {Fore.WHITE}{cert.get('notBefore')}")
+        print(f"{MENU_COLOR} Valid Until: {Fore.WHITE}{cert.get('notAfter')}")
+        print(f"{MENU_COLOR} Serial Number: {Fore.WHITE}{cert.get('serialNumber')}")
+        print(f"{MENU_COLOR} Version: {Fore.WHITE}{cert.get('version')}")
     except ssl.SSLError as e:
-        print(f"{Fore.RED} SSL Error: {e}")
+        print(f"{MENU_COLOR} SSL Error: {e}")
     except socket.gaierror:
-        print(f"{Fore.RED} Error: Could not resolve domain.")
+        print(f"{MENU_COLOR} Error: Could not resolve domain.")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # SSL/TLS Scanner UI
 def ssl_tls_scanner_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
    _____ _____ _          _________ _       _____    _____                                 
   / ____/ ____| |        / /__   __| |     / ____|  / ____|                                
  | (___| (___ | |       / /   | |  | |    | (___   | (___   ___ __ _ _ __  _ __   ___ _ __ 
@@ -976,16 +977,16 @@ def ssl_tls_scanner_screen():
     """)
     print(Fore.WHITE + """ The SSL/TLS Scanner retrieves certificate information
  from a domain including issuer, validity period, and subject details.\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run SSL/TLS Scanner")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run SSL/TLS Scanner")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_ssl_tls_scanner()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         ssl_tls_scanner_screen()
 
@@ -999,7 +1000,7 @@ def run_open_directory_finder():
 
     common_dirs = ["admin", "backup", "uploads", "files", "images", "downloads", "private", "logs"]
 
-    print(f"\n{Fore.RED} Scanning common directories...\n")
+    print(f"\n{MENU_COLOR} Scanning common directories...\n")
 
     try:
         import requests
@@ -1012,17 +1013,17 @@ def run_open_directory_finder():
                 else:
                     print(f"{Fore.WHITE} [-] {url}")
             except requests.exceptions.RequestException:
-                print(f"{Fore.RED} [!] Failed to reach: {url}")
+                print(f"{MENU_COLOR} [!] Failed to reach: {url}")
     except Exception as e:
-        print(f"{Fore.RED} Error: {e}")
+        print(f"{MENU_COLOR} Error: {e}")
 
-    input(f"\n{Fore.RED} Press Enter to return to menu...")
+    input(f"\n{MENU_COLOR} Press Enter to return to menu...")
     main_menu()
 
 # Open Directory Finder UI
 def open_directory_finder_screen():
     clear()
-    print(Fore.RED + r"""
+    print(MENU_COLOR + r"""
    ____                     _____  _               _                     ______ _           _           
   / __ \                   |  __ \(_)             | |                   |  ____(_)         | |          
  | |  | |_ __   ___ _ __   | |  | |_ _ __ ___  ___| |_ ___  _ __ _   _  | |__   _ _ __   __| | ___ _ __ 
@@ -1034,49 +1035,85 @@ def open_directory_finder_screen():
     """)
     print(Fore.WHITE + """ Open Directory Finder checks for publicly accessible open directories
  on the target website. Open directories often expose sensitive files!\n""")
-    print(f"{Fore.RED} [1]{Fore.WHITE} Run Open Directory Finder")
-    print(f"{Fore.RED} [2]{Fore.WHITE} Back to Menu\n")
+    print(f"{MENU_COLOR} [1]{Fore.WHITE} Run Open Directory Finder")
+    print(f"{MENU_COLOR} [2]{Fore.WHITE} Back to Menu\n")
 
-    choice = input(Fore.RED + " [?]> " + Fore.WHITE)
+    choice = input(MENU_COLOR + " [?]> " + Fore.WHITE)
     if choice == "1":
         run_open_directory_finder()
     elif choice == "2":
         main_menu()
     else:
-        print(Fore.RED + " Invalid choice. Returning...")
+        print(MENU_COLOR + " Invalid choice. Returning...")
         time.sleep(2)
         open_directory_finder_screen()
 
 
-# Main Menu
+from colorama import Fore, Style
+import os
+import sys
+import time
+
+# Default menu color
+MENU_COLOR = Fore.RED
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def set_menu_color():
+    global MENU_COLOR
+    clear()
+    print(" Choose a color theme:\n")
+    print(f" [1] {Fore.RED}Red{Fore.RESET}")
+    print(f" [2] {Fore.GREEN}Green{Fore.RESET}")
+    print(f" [3] {Fore.BLUE}Blue{Fore.RESET}")
+    print(f" [4] {Fore.YELLOW}Yellow{Fore.RESET}")
+    print(f" [5] {Fore.MAGENTA}Magenta{Fore.RESET}")
+    print(f" [6] {Fore.CYAN}Cyan{Fore.RESET}")
+
+    choice = input("\n Your choice: ").strip()
+    color_map = {
+        "1": Fore.RED,
+        "2": Fore.GREEN,
+        "3": Fore.BLUE,
+        "4": Fore.YELLOW,
+        "5": Fore.MAGENTA,
+        "6": Fore.CYAN
+    }
+
+    MENU_COLOR = color_map.get(choice, MENU_COLOR)
+
 def main_menu():
     clear()
     print('')
-    print('')
-    print(rf'{Fore.RED}    __  __     ______     ______     __  __     ______     __  __    {Fore.RESET}')
-    print(rf'{Fore.RED}   /\ \_\ \   /\  __ \   /\  ___\   /\ \/ /    /\___  \   /\ \_\ \   {Fore.RESET}')
-    print(rf'{Fore.RED}   \ \  __ \  \ \  __ \  \ \ \____  \ \  _"-.  \/_/  /__  \ \____ \  {Fore.RESET}') 
-    print(rf'{Fore.RED}    \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\   /\_____\  \/\_____\ {Fore.RESET}')
-    print(rf'{Fore.RED}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ version: 1.1.1{Fore.RESET}') 
-    print(rf'{Fore.RED}                                                                  {Fore.RESET}') 
-    print(f" {Fore.RED}                             Made by Cr3zy{Fore.RESET}")
-    print('')
-
-    print(f"{Fore.RED} [01]{Fore.WHITE} Port Scanner            {Fore.RED}[11]{Fore.WHITE} Metadata Extractor    {Fore.RED}[21]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [02]{Fore.WHITE} IP Tracker              {Fore.RED}[12]{Fore.WHITE} Subdomain Finder      {Fore.RED}[22]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [03]{Fore.WHITE} Whois Lookup            {Fore.RED}[13]{Fore.WHITE} Payload Generator     {Fore.RED}[23]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [04]{Fore.WHITE} DNS Resolver            {Fore.RED}[14]{Fore.WHITE} Hash Identifier       {Fore.RED}[24]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [05]{Fore.WHITE} Email Scraper           {Fore.RED}[15]{Fore.WHITE} Dir/File Bruteforcer  {Fore.RED}[25]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [06]{Fore.WHITE} Traceroute              {Fore.RED}[16]{Fore.WHITE} Ping Tool             {Fore.RED}[26]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [07]{Fore.WHITE} Header Analyzer         {Fore.RED}[17]{Fore.WHITE} SSL/TLS Scanner       {Fore.RED}[27]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [08]{Fore.WHITE} Phone Info Lookup       {Fore.RED}[18]{Fore.WHITE} Open Directory Finder {Fore.RED}[28]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [09]{Fore.WHITE} Reverse DNS Lookup      {Fore.RED}[19]{Fore.WHITE} SOON                  {Fore.RED}[29]{Fore.WHITE} SOON")
-    print(f"{Fore.RED} [10]{Fore.WHITE} User-Agent Parser       {Fore.RED}[20]{Fore.WHITE} SOON                  {Fore.RED}[30]{Fore.WHITE} SOON")  
-    print('')
-    print(f"{Fore.RED} [99]{Fore.WHITE} Exit")
+    print(rf'{MENU_COLOR}    __  __     ______     ______     __  __     ______     __  __    {Fore.RESET}')
+    print(rf'{MENU_COLOR}   /\ \_\ \   /\  __ \   /\  ___\   /\ \/ /    /\___  \   /\ \_\ \   {Fore.RESET}')
+    print(rf'{MENU_COLOR}   \ \  __ \  \ \  __ \  \ \ \____  \ \  _"-.  \/_/  /__  \ \____ \  {Fore.RESET}') 
+    print(rf'{MENU_COLOR}    \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\   /\_____\  \/\_____\ {Fore.RESET}')
+    print(rf'{MENU_COLOR}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ {Fore.RESET}')
+    print('') 
+    print(rf'{MENU_COLOR}                              Version{Fore.WHITE} 2.0.0              {Fore.RESET}')
+    print(f"{Fore.LIGHTWHITE_EX}                You are fully responsible for your actions.")
+    print(f"{Fore.LIGHTBLACK_EX}                © 2025 Cr3zy (https://github.com/Cr3zy-dev){Fore.RESET}")
+    print(rf"                  {MENU_COLOR}[{Fore.WHITE}::{MENU_COLOR}] Select A Number From The Menu {MENU_COLOR}[{Fore.WHITE}::{MENU_COLOR}]")
     print('')
 
-    choice = input(Fore.RED + ' [?]> ' + Fore.WHITE).lstrip('0')
+    print(f"{MENU_COLOR} [01]{Fore.WHITE} Port Scanner            {MENU_COLOR}[11]{Fore.WHITE} Metadata Extractor    {MENU_COLOR}[21]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [02]{Fore.WHITE} IP Tracker              {MENU_COLOR}[12]{Fore.WHITE} Subdomain Finder      {MENU_COLOR}[22]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [03]{Fore.WHITE} Whois Lookup            {MENU_COLOR}[13]{Fore.WHITE} Payload Generator     {MENU_COLOR}[23]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [04]{Fore.WHITE} DNS Resolver            {MENU_COLOR}[14]{Fore.WHITE} Hash Identifier       {MENU_COLOR}[24]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [05]{Fore.WHITE} Email Scraper           {MENU_COLOR}[15]{Fore.WHITE} Dir/File Bruteforcer  {MENU_COLOR}[25]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [06]{Fore.WHITE} Traceroute              {MENU_COLOR}[16]{Fore.WHITE} Ping Tool             {MENU_COLOR}[26]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [07]{Fore.WHITE} Header Analyzer         {MENU_COLOR}[17]{Fore.WHITE} SSL/TLS Scanner       {MENU_COLOR}[27]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [08]{Fore.WHITE} Phone Info Lookup       {MENU_COLOR}[18]{Fore.WHITE} Open Directory Finder {MENU_COLOR}[28]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [09]{Fore.WHITE} Reverse DNS Lookup      {MENU_COLOR}[19]{Fore.WHITE} SOON                  {MENU_COLOR}[29]{Fore.WHITE} SOON")
+    print(f"{MENU_COLOR} [10]{Fore.WHITE} User-Agent Parser       {MENU_COLOR}[20]{Fore.WHITE} SOON                  {MENU_COLOR}[30]{Fore.WHITE} SOON")  
+    print('')
+    print(f"{MENU_COLOR} [98]{Fore.WHITE} Color themes")
+    print(f"{MENU_COLOR} [99]{Fore.WHITE} Exit")
+    print('')
+
+    choice = input(MENU_COLOR + ' [?]> ' + Fore.WHITE).lstrip('0')
 
     if choice == "1":
         port_scanner_screen()
@@ -1114,25 +1151,17 @@ def main_menu():
         ssl_tls_scanner_screen()
     elif choice == "18":
         open_directory_finder_screen()
+    elif choice == "98":
+        set_menu_color()
+        main_menu()
     elif choice == "99":
         print(Fore.GREEN + " Goodbye!" + Fore.RESET)
         sys.exit()
     else:
-        print(Fore.RED + " Invalid choice. Returning to main menu...")
+        print(MENU_COLOR + " Invalid choice. Returning to main menu...")
         time.sleep(2)
         main_menu()
 
 # Start
 clear()
-print(f"""{Fore.WHITE}
- Hackzy is intended strictly for educational and ethical purposes.
- The developer and contributors are not responsible for any misuse.
- You are fully responsible for your actions.
-
- Do NOT use Hackzy on systems or networks without explicit permission.
- Unauthorized use may violate laws and result in criminal penalties.
-
- © 2025 Cr3zy (https://github.com/Cr3zy-dev)   |   License: GNU GPL v3.0 or later
-""")
-wait_for_keypress()
 main_menu()
