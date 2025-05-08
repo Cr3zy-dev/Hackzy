@@ -1,6 +1,5 @@
 colorama
 requests
-whois
 python-whois
 phonenumbers
 Pillow
