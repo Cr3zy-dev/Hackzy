@@ -2,7 +2,7 @@
 ##
 ##   Hackzy  -  Simple multi-tool for ethical hacking and learning about computers
 ##   Author  :  Cr3zy
-##   Version :  2.0.0
+##   Version :  2.0.1
 ##   GitHub  :  https://github.com/Cr3zy-dev
 ##
 ##   This program is free software: you can redistribute it and/or modify
@@ -58,23 +58,6 @@ import whois
 from user_agents import parse
 
 init(autoreset=True)
-
-# Cross-platform press-any-key
-def wait_for_keypress():
-    print(f"{MENU_COLOR} Press any key to continue...", end='', flush=True)
-    try:
-        import msvcrt
-        msvcrt.getch()
-    except ImportError:
-        import tty
-        import termios
-        fd = sys.stdin.fileno()
-        old = termios.tcgetattr(fd)
-        try:
-            tty.setraw(fd)
-            sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
 # Clear screen
 def clear():
@@ -1048,22 +1031,43 @@ def open_directory_finder_screen():
         time.sleep(2)
         open_directory_finder_screen()
 
-
-from colorama import Fore, Style
 import os
 import sys
 import time
+import json
+from colorama import Fore, Style, init
 
-# Default menu color
-MENU_COLOR = Fore.RED
+init(autoreset=True)
 
-def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
+SETTINGS_FILE = "settings.json"
+
+COLOR_MAP = {
+    "Red": Fore.RED,
+    "Green": Fore.GREEN,
+    "Blue": Fore.BLUE,
+    "Yellow": Fore.YELLOW,
+    "Magenta": Fore.MAGENTA,
+    "Cyan": Fore.CYAN
+}
+
+def load_settings():
+    if os.path.exists(SETTINGS_FILE):
+        with open(SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def save_settings(settings):
+    with open(SETTINGS_FILE, "w") as f:
+        json.dump(settings, f)
+
+def update_menu_color():
+    global MENU_COLOR
+    MENU_COLOR = COLOR_MAP.get(settings.get("theme", "Red"), Fore.RED)
 
 def set_menu_color():
     global MENU_COLOR
     clear()
-    print(" Choose a color theme:\n")
+    print("\n Choose menu color:\n")
     print(f" [1] {Fore.RED}Red{Fore.RESET}")
     print(f" [2] {Fore.GREEN}Green{Fore.RESET}")
     print(f" [3] {Fore.BLUE}Blue{Fore.RESET}")
@@ -1072,16 +1076,24 @@ def set_menu_color():
     print(f" [6] {Fore.CYAN}Cyan{Fore.RESET}")
 
     choice = input("\n Your choice: ").strip()
-    color_map = {
-        "1": Fore.RED,
-        "2": Fore.GREEN,
-        "3": Fore.BLUE,
-        "4": Fore.YELLOW,
-        "5": Fore.MAGENTA,
-        "6": Fore.CYAN
+
+    color_names = {
+        "1": "Red",
+        "2": "Green",
+        "3": "Blue",
+        "4": "Yellow",
+        "5": "Magenta",
+        "6": "Cyan"
     }
 
-    MENU_COLOR = color_map.get(choice, MENU_COLOR)
+    color_name = color_names.get(choice, "Red")
+    settings["theme"] = color_name
+    save_settings(settings)
+    update_menu_color()
+
+# Load settings and apply color
+settings = load_settings()
+update_menu_color()
 
 def main_menu():
     clear()
@@ -1092,12 +1104,11 @@ def main_menu():
     print(rf'{MENU_COLOR}    \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\   /\_____\  \/\_____\ {Fore.RESET}')
     print(rf'{MENU_COLOR}     \/_/\/_/   \/_/\/_/   \/_____/   \/_/\/_/   \/_____/   \/_____/ {Fore.RESET}')
     print('') 
-    print(rf'{MENU_COLOR}                              Version{Fore.WHITE} 2.0.0              {Fore.RESET}')
+    print(rf'{MENU_COLOR}                              Version{Fore.WHITE} 2.0.1              {Fore.RESET}')
     print(f"{Fore.LIGHTWHITE_EX}                You are fully responsible for your actions.")
-    print(f"{Fore.LIGHTBLACK_EX}                © 2025 Cr3zy (https://github.com/Cr3zy-dev){Fore.RESET}")
+    print(f"{Fore.WHITE}                © 2025 Cr3zy (https://github.com/Cr3zy-dev){Fore.RESET}")
     print(rf"                  {MENU_COLOR}[{Fore.WHITE}::{MENU_COLOR}] Select A Number From The Menu {MENU_COLOR}[{Fore.WHITE}::{MENU_COLOR}]")
     print('')
-
     print(f"{MENU_COLOR} [01]{Fore.WHITE} Port Scanner            {MENU_COLOR}[11]{Fore.WHITE} Metadata Extractor    {MENU_COLOR}[21]{Fore.WHITE} SOON")
     print(f"{MENU_COLOR} [02]{Fore.WHITE} IP Tracker              {MENU_COLOR}[12]{Fore.WHITE} Subdomain Finder      {MENU_COLOR}[22]{Fore.WHITE} SOON")
     print(f"{MENU_COLOR} [03]{Fore.WHITE} Whois Lookup            {MENU_COLOR}[13]{Fore.WHITE} Payload Generator     {MENU_COLOR}[23]{Fore.WHITE} SOON")
@@ -1109,7 +1120,7 @@ def main_menu():
     print(f"{MENU_COLOR} [09]{Fore.WHITE} Reverse DNS Lookup      {MENU_COLOR}[19]{Fore.WHITE} SOON                  {MENU_COLOR}[29]{Fore.WHITE} SOON")
     print(f"{MENU_COLOR} [10]{Fore.WHITE} User-Agent Parser       {MENU_COLOR}[20]{Fore.WHITE} SOON                  {MENU_COLOR}[30]{Fore.WHITE} SOON")  
     print('')
-    print(f"{MENU_COLOR} [98]{Fore.WHITE} Color themes")
+    print(f"{MENU_COLOR} [98]{Fore.WHITE} Menu Color Settings")
     print(f"{MENU_COLOR} [99]{Fore.WHITE} Exit")
     print('')
 
@@ -1158,7 +1169,7 @@ def main_menu():
         print(Fore.GREEN + " Goodbye!" + Fore.RESET)
         sys.exit()
     else:
-        print(MENU_COLOR + " Invalid choice. Returning to main menu...")
+        print(Fore.RED + " Invalid choice. Returning to main menu...")
         time.sleep(2)
         main_menu()
 
