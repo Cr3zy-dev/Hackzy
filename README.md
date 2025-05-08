@@ -127,8 +127,8 @@ Then simply select a tool from the interactive menu.
 
 ## 🗃️ Screenshots
 
-![image](https://github.com/user-attachments/assets/e38528fd-6c6b-44f0-af6d-2bb0fb324664)
-![image](https://github.com/user-attachments/assets/412fbb82-6e2a-4a26-9410-c58d7ae3b168)
+![image](https://github.com/user-attachments/assets/18114b8b-f31b-4514-965b-438582999b97)
+![image](https://github.com/user-attachments/assets/679c666e-3b99-42ac-a4a6-ce670b162e09)
 
 ---
 
